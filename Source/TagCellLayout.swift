@@ -83,7 +83,13 @@ private extension TagCellLayout {
 	}
 	
 	var tagsCount: Int {
-		return collectionView?.numberOfItems(inSection: 0) ?? 0
+        guard let collectionView = collectionView else {
+            return 0
+        }
+        if collectionView.numberOfSections == 0 {
+            return 0
+        }
+        return collectionView.numberOfItems(inSection: 0)
 	}
 	
 	var collectionViewWidth: CGFloat {
@@ -209,7 +215,7 @@ private extension TagCellLayout {
 	
 	func handleTagAlignment() {
 		guard alignment != .left else { return }
-		let tagsCount = collectionView!.numberOfItems(inSection: 0)
+        let tagsCount = self.tagsCount
 		for tagIndex in 0 ..< tagsCount {
 			var tagFrame = layoutInfoList[tagIndex].layoutAttribute.frame
 			let whiteSpace = layoutInfoList[tagIndex].whiteSpace
